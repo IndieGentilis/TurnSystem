@@ -9,7 +9,13 @@ public class TurnManager : MonoBehaviour {
 
     private enum Turns {FIRST,SECOND,THIRD,FORTH,DARKLORD};
     private Turns currentTurn;
+    private static TurnManager turnManager;
+
 	void Start () {
+        if (turnManager != null) {
+            Destroy(this.gameObject);
+        }
+        turnManager = this;
         currentTurn = Turns.FIRST;
         nextTurnButton.onClick.AddListener(() => nextTurn());
     }
