@@ -5,10 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class TurnManager : MonoBehaviour {
-    public Button nextTurnButton;
 
-    private enum Turns {FIRST,SECOND,THIRD,FORTH,DARKLORD};
-    private Turns currentTurn;
     private static TurnManager turnManager;
 
 	void Start () {
@@ -16,29 +13,27 @@ public class TurnManager : MonoBehaviour {
             Destroy(this.gameObject);
         }
         turnManager = this;
-        currentTurn = Turns.FIRST;
-        nextTurnButton.onClick.AddListener(() => nextTurn());
     }
 	
 	void Update () {
-        switch (currentTurn){
-            case Turns.FIRST:
+        switch (GameCommon.instance.currentTurn){
+            case GameCommon.Turns.FIRST:
                 //First Logic
                 Debug.Log("First");
                 break;
-            case Turns.SECOND:
+            case GameCommon.Turns.SECOND:
                 //Second logic
                 Debug.Log("SECOND");
                 break;
-            case Turns.THIRD:
+            case GameCommon.Turns.THIRD:
                 // Third logic
                 Debug.Log("THIRD");
                 break;
-            case Turns.FORTH:
+            case GameCommon.Turns.FORTH:
                 // Forth logic
                 Debug.Log("FORTH");
                 break;
-            case Turns.DARKLORD:
+            case GameCommon.Turns.DARKLORD:
                 //DARKLORD LOGIC
                 Debug.Log("DARKLORD");
                 break;
@@ -47,27 +42,4 @@ public class TurnManager : MonoBehaviour {
 
         }
 	}
-    void nextTurn(){
-        switch (currentTurn)
-        {
-            case Turns.FIRST:
-                currentTurn = Turns.SECOND;
-                break;
-            case Turns.SECOND:
-                currentTurn = Turns.THIRD;
-                break;
-            case Turns.THIRD:
-                currentTurn = Turns.FORTH;
-                break;
-            case Turns.FORTH:
-                currentTurn = Turns.DARKLORD;
-                break;
-            case Turns.DARKLORD:
-                currentTurn = Turns.FIRST;
-                break;
-            default:
-                break;
-
-        }
-    }
 }
