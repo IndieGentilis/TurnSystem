@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\ButtonListeners.cs" />
+    <Compile Include="Assets\Scripts\DetectingAcceleration.cs" />
     <Compile Include="Assets\Scripts\GameCommon.cs" />
     <Compile Include="Assets\Scripts\TurnManager.cs" />
   </ItemGroup>
