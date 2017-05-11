@@ -14,7 +14,6 @@ public class DetectingAcceleration : MonoBehaviour
     
 
     public Sprite[] diceFaces;
-    private bool isRolling;
     private int resultDiceFace;
     private float rollingTime = 3f;
     private bool detectedShake;
@@ -30,7 +29,6 @@ public class DetectingAcceleration : MonoBehaviour
         lowPassFilterFactor = accelerometerUpdateInterval / lowPassKernelWidthInSeconds;
         shakeDetectionThreshold *= shakeDetectionThreshold;
         lowPassValue = Input.acceleration;
-        isRolling = false;
 
     }
 
@@ -54,19 +52,19 @@ public class DetectingAcceleration : MonoBehaviour
         if (deltaAcceleration.sqrMagnitude >= shakeDetectionThreshold) {
             text.text = "Shake event detected at time " + Time.time;
             detectedShake = true;
-            isRolling = true;
+            GameCommon.instance.isRolling = true;
 
         }
     }
     public void onClickRollDice(){
 
-        if (GameCommon.instance.canRoll && !isRolling) {
+        if (GameCommon.instance.canRoll && !GameCommon.instance.isRolling) {
             detectedClick = true;
-            isRolling = true;
+            GameCommon.instance.isRolling = true;
         }
     }
     void RollDice() {
-        if (isRolling && rollingTime > 0) rollingTime -= Time.time;
+        if (GameCommon.instance.isRolling && rollingTime > 0) rollingTime -= Time.time;
         StartCoroutine(startRollingDice());
     }
 
@@ -77,19 +75,19 @@ public class DetectingAcceleration : MonoBehaviour
     }
     IEnumerator startRollingDice()
     {
-        Debug.Log("holi");
         generateRandomDiceFace();
         yield return new WaitForSeconds(time);
-        if (isRolling && rollingTime > 0)
+        if (GameCommon.instance.isRolling && rollingTime > 0)
         {
             
             StartCoroutine(startRollingDice());
         }
         else
         {
-            isRolling = false;
+            GameCommon.instance.isRolling = false;
             GameCommon.instance.canRoll = false;
             detectedShake = false;
+            detectedClick = false;
         }
     }
 }
