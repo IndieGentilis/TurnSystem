@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class TurnOverlayManager : MonoBehaviour {
 
-    public  void DisableBoolAnimator (Animator anim)
+    public void DisableBoolAnimator (Animator anim)
     {
         anim.SetBool("isDisplayed", false);
     }
-    public  void EnableBoolAnimator(Animator anim)
+    public void EnableBoolAnimator(Animator anim)
     {
         anim.SetBool("isDisplayed", true);
     }
