@@ -11,6 +11,7 @@ public abstract class MovingController : MonoBehaviour {
     private Rigidbody2D rigidBody;
     private float inverseMoveTime;
     public float moveTime = 0.1f;
+    private bool moving;
 
     // Use this for initialization
     protected virtual void Start () {
@@ -19,6 +20,8 @@ public abstract class MovingController : MonoBehaviour {
         rigidBody = GetComponent<Rigidbody2D>();
 
         inverseMoveTime = 1f / moveTime;
+
+        moving = false;
 	}
 
     protected bool Move(int x, int y, out RaycastHit2D hit) {
@@ -38,6 +41,7 @@ public abstract class MovingController : MonoBehaviour {
 
     private IEnumerator SmoothMovement(Vector3 end) {
         float distance = (transform.position - end).sqrMagnitude;
+        moving = true;
         while(distance > float.Epsilon) {
             Vector3 newPosition = Vector3.MoveTowards(rigidBody.position, end, inverseMoveTime * Time.deltaTime);
 
@@ -52,7 +56,7 @@ public abstract class MovingController : MonoBehaviour {
     protected virtual void AttemptMove<T>(int xDir, int yDir) where T : Component {
         RaycastHit2D hit;
 
-        bool canMove = Move(xDir, yDir, out hit);
+        bool canMove = Move(xDir, yDir, out hit) && !moving;
 
         if (hit.transform == null)
             return;
