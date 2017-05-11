@@ -14,24 +14,36 @@ public class DetectingAcceleration : MonoBehaviour
     
 
     public Sprite[] diceFaces;
-    private bool isRolling;
     private int resultDiceFace;
     private float rollingTime = 3f;
-    private bool detectedShake = false;
+    private bool detectedShake;
     private float time = 1f;
+    private bool detectedClick;
 
     Vector3 lowPassValue;
 
     void Start()
     {
+        detectedShake = false;
+        detectedClick = false;
         lowPassFilterFactor = accelerometerUpdateInterval / lowPassKernelWidthInSeconds;
         shakeDetectionThreshold *= shakeDetectionThreshold;
         lowPassValue = Input.acceleration;
-        isRolling = false;
 
     }
 
     void Update()
+    {
+
+
+        checkAcceleration();
+
+        if ((detectedClick || detectedShake) && GameCommon.instance.canRoll) {
+            RollDice();
+        }
+        
+    }
+    void checkAcceleration()
     {
         Vector3 acceleration = Input.acceleration;
         lowPassValue = Vector3.Lerp(lowPassValue, acceleration, lowPassFilterFactor);
@@ -40,19 +52,19 @@ public class DetectingAcceleration : MonoBehaviour
         if (deltaAcceleration.sqrMagnitude >= shakeDetectionThreshold) {
             text.text = "Shake event detected at time " + Time.time;
             detectedShake = true;
-            isRolling = true;
+            GameCommon.instance.isRolling = true;
 
         }
-
-        if (detectedShake && GameCommon.instance.canRoll)
-        {
-            if (isRolling && rollingTime > 0) rollingTime -= Time.time;
-            StartCoroutine(startRollingDice());
-        }
-        
     }
+    public void onClickRollDice(){
 
-    public void RollDice() {
+        if (GameCommon.instance.canRoll && !GameCommon.instance.isRolling) {
+            detectedClick = true;
+            GameCommon.instance.isRolling = true;
+        }
+    }
+    void RollDice() {
+        if (GameCommon.instance.isRolling && rollingTime > 0) rollingTime -= Time.time;
         StartCoroutine(startRollingDice());
     }
 
@@ -65,16 +77,17 @@ public class DetectingAcceleration : MonoBehaviour
     {
         generateRandomDiceFace();
         yield return new WaitForSeconds(time);
-        if (isRolling && rollingTime > 0)
+        if (GameCommon.instance.isRolling && rollingTime > 0)
         {
             
             StartCoroutine(startRollingDice());
         }
         else
         {
-            isRolling = false;
+            GameCommon.instance.isRolling = false;
             GameCommon.instance.canRoll = false;
             detectedShake = false;
+            detectedClick = false;
         }
     }
 }
