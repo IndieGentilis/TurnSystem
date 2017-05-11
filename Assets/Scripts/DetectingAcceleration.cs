@@ -52,6 +52,10 @@ public class DetectingAcceleration : MonoBehaviour
         
     }
 
+    public void RollDice() {
+        StartCoroutine(startRollingDice());
+    }
+
     void generateRandomDiceFace()
     {
         resultDiceFace = Random.Range(0, 6);
