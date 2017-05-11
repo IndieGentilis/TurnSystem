@@ -9,6 +9,7 @@ public class GameCommon : MonoBehaviour {
     public enum Turns {FIRST,SECOND,THIRD,FORTH,DARKLORD };
     public Turns currentTurn;
     public bool canRoll;
+    public bool isRolling;
     private void Awake()
     {
         if (instance == null)
@@ -21,7 +22,10 @@ public class GameCommon : MonoBehaviour {
     }
     private void Start()
     {
+        
+        
         currentTurn = Turns.FIRST;
         canRoll = true;
+        isRolling = false;
     }
 }
