@@ -30,7 +30,7 @@ public abstract class MovingController : MonoBehaviour {
         boxCollider.enabled = false;
         hit = Physics2D.Linecast(start, end, blockingLayer);
         boxCollider.enabled = true;
-        if(hit.transform == null) {
+        if(hit.transform == null && !moving) {
             StartCoroutine(SmoothMovement(end));
 
             return true;
@@ -47,16 +47,21 @@ public abstract class MovingController : MonoBehaviour {
 
             rigidBody.MovePosition(newPosition);
 
-            distance = (transform.position - end).sqrMagnitude;
+            distance = (transform.position - end).sqrMagnitude -1;
+
+            Debug.Log(distance);
 
             yield return null;
         }
+
+        moving = false;
+
     }
 
     protected virtual void AttemptMove<T>(int xDir, int yDir) where T : Component {
         RaycastHit2D hit;
 
-        bool canMove = Move(xDir, yDir, out hit) && !moving;
+        bool canMove = Move(xDir, yDir, out hit);
 
         if (hit.transform == null)
             return;
