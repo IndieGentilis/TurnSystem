@@ -17,36 +17,32 @@ public class ButtonListeners : MonoBehaviour {
                         GameCommon.instance.currentTurn = GameCommon.Turns.SECOND;
                         GameCommon.instance.canRoll = true;
                         turnText.text = "SECOND";
-                        panelTurnAnimator.SetTrigger("Display");
                         break;
                     case GameCommon.Turns.SECOND:
                         GameCommon.instance.currentTurn = GameCommon.Turns.THIRD;
                         GameCommon.instance.canRoll = true;
                         turnText.text = "THIRD";
-                        panelTurnAnimator.SetTrigger("Display");
                     break;
                     case GameCommon.Turns.THIRD:
                         GameCommon.instance.currentTurn = GameCommon.Turns.FORTH;
                         GameCommon.instance.canRoll = true;
                         turnText.text = "FORTH";
-                        panelTurnAnimator.SetTrigger("Display");
                     break;
                     case GameCommon.Turns.FORTH:
                         GameCommon.instance.currentTurn = GameCommon.Turns.DARKLORD;
                         GameCommon.instance.canRoll = true;
                         turnText.text = "DARKLORD";
-                        panelTurnAnimator.SetTrigger("Display");
                     break;
                     case GameCommon.Turns.DARKLORD:
                         GameCommon.instance.currentTurn = GameCommon.Turns.FIRST;
                         GameCommon.instance.canRoll = true;
                         turnText.text = "FIRST";
-                        panelTurnAnimator.SetTrigger("Display");
                     break;
                     default:
                         break;
 
                 }
+                        panelTurnAnimator.SetTrigger("Display");
 
             }
     }
